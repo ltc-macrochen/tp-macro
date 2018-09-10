@@ -38,17 +38,17 @@ AppAsset::register($this);
     if(Yii::$app->user->isGuest) {
         $items[] = ['label' => '登录', 'url' => ['user/admin-login']];
     } else {
+        /*
         $items[] = ['label' => '用户管理', 'items' => [
             ['label' => '用户查看', 'url' => ['/user-mgr/index']],
-            ['label' => '赠送娃娃币', 'url' => ['/user-mgr/give-coin']],
             ['label' => '用户账单', 'url' => ['/user-mgr/bill']],
         ]];
-        $items[] = ['label' => '娃娃机管理', 'url' => ['/machine/index']];
-        $items[] = ['label' => '订单管理', 'url' => ['/order-mgr/index']];
+        */
+        $items[] = ['label' => '校花管理', 'url' => ['/girls/index']];
         $items[] = '<li>'
             . Html::beginForm(['user/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->nickname . ')',
+                '登出 (' . Yii::$app->user->identity->nickname . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
