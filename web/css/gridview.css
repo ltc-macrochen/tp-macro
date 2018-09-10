@@ -1,0 +1,76 @@
+
+.input_on{
+    padding:2px 4px 0pt 3px;
+    height:20px;
+    font-size:12px;
+    border:1px solid #999;
+    background-color:#FFFFCC;
+    border-radius: 3px;
+}
+.input_off{
+    padding:2px 4px 0pt 3px;
+    height:20px;
+    font-size:12px;
+    border:1px solid #CCC;
+    background-color:#FFF;
+    border-radius: 3px;
+}
+.input_move{
+    padding:2px 4px 0pt 3px;
+    height:20px;
+    font-size:12px;
+    border:1px solid #999;
+    background-color:#FFFFCC;
+    border-radius: 3px;
+}
+.input_out{
+    padding:2px 4px 0pt 3px;
+    height:20px;
+    font-size:12px;
+    border:1px solid #CCC;
+    background-color:#FFF;
+    border-radius: 3px;
+}
+
+div.input_text{
+    //margin:20px auto 0 auto;
+    width:280px;
+    list-style-type:none;
+    display: inline-block;
+    font-size:14px;
+}
+.input_text label{
+    float:left;
+    padding-right:10px;
+    width:100px;
+    line-height:22px;
+    text-align:right;
+    //font-size:1.4em;
+    font-weight: normal;
+}
+.input_text p{
+    float:left;
+    _margin-top:-1px;
+}
+.input_text span{
+    float:left;
+    padding-left:10px;
+    line-height:22px;
+    text-align:left;
+    font-size:1.2em;
+    color:#999;
+}
+
+fieldset.search  {
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+legend.search  {
+    font-size: 14px;
+    border-bottom: 0px solid #e5e5e5;
+    margin-bottom: 4px;
+    margin-left: 8px;
+    width: auto;
+}
