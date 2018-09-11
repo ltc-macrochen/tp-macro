@@ -28,7 +28,7 @@ CREATE TABLE `t_girls` (
   `created_at` INT DEFAULT 0 COMMENT '创建时间',
   `updated_at` INT DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `index_status` (`status`)
+  KEY `index_status_votecount` (`status`, `vote_count`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS `t_vote_history`;

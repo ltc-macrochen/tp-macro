@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('新增校花', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('导出数据', ['download'], ['class' => 'btn btn-info']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,16 +26,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'name',
-            'head',
+            [
+                'label' => '头像',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::img($model->head, ['style' => 'width:auto;height:50px;']);
+                },
+            ],
             'vote_count',
             [
                 'label' => '状态',
                 'value' => 'statusName'
             ],
-            // 'created_at',
+            [
+                'label' => '创建时间',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+                'value' => 'created_at'
+            ],
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+
+            ],
         ],
     ]); ?>
 </div>

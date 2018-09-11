@@ -32,49 +32,16 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['create-wallet', 'logout']
+                        'actions' => ['logout']
                     ],
                     [
                         'allow' => true,
                         'roles' => ['?'],
-                        'actions' => ['login', 'login-stub', 'admin-login']
+                        'actions' => ['admin-login']
                     ]
                 ],
             ]
         ];
-    }
-
-    public function actionSignUp()
-    {return 0;
-        $form = new UserForm();
-        if(\Yii::$app->request->isPost) {
-            $form->load(\Yii::$app->request->post());
-            if($form->user_password != $form->re_password) {
-                \Yii::$app->session->setFlash('danger', '密码和确认密码不一样');
-            } else {
-                $form->user_password = md5($form->user_password);
-                if ($form->save()) {
-                    \Yii::$app->session->setFlash('success', "成功注册用户");
-                    return $this->render("login", ['model' => new User()]);
-                } else {
-                    \Yii::$app->session->setFlash('danger', "注册用户失败:" . VarDumper::dumpAsString($form->getErrors()));
-                }
-            }
-        }
-        return $this->render("signup", ['model' => $form]);
-    }
-
-    /**
-     * 用户登录
-     * @return string|\yii\web\Response
-     */
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        return $this->render('login');
     }
 
     /**

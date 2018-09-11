@@ -9,10 +9,6 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = '登录';
 ?>
-<style>
-    .admin-login-box .form-group label{width:15% !important;}
-    .admin-login-box .form-group input{width:80% !important;display: inline-block;}
-</style>
 <div class="site-login p-b-200 p-t-100 bg-white site-border-box">
 
     <div class="row">
@@ -33,7 +29,7 @@ $this->title = '登录';
             <?=''; /*$form->field($model, 'rememberMe')->checkbox()->label('记住我')*/ ?>
 
             <br>
-            <div style="margin-left:17%;margin-top: 12px" > <?= Html::submitButton('登录 <span class="glyphicon"></span>', ['style' => 'width:96%;', 'class' => 'btn btn-primary', 'name' => 'login-button']) ?></div>
+            <div> <?= Html::submitButton('登录 <span class="glyphicon"></span>', ['style' => 'width:100%;', 'class' => 'btn btn-primary', 'name' => 'login-button']) ?></div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

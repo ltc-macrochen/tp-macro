@@ -36,6 +36,16 @@ class UploadProgress extends Widget
             });
 END
 );
+        $this->view->registerCss(<<<END
+            .m-upload-btn {
+                border: 1px solid;
+                padding: 3px 5px;
+                border-radius: 4px;                
+                margin-left: 10px;
+            }
+            .m-upload-btn:focus{text-decoration: none;}
+END
+);
 
         $modal = Modal::begin([
             'header' => "<h2>$this->title</h2>",

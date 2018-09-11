@@ -7,19 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Girls */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Girls', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '校花管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="girls-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '您确定要删除该条记录吗？',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,11 +28,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'head',
+            [
+                'attribute' => 'head',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::img($model->head, ['style' => 'height:200px;width:auto;']);
+                }
+            ],
             'vote_count',
-            'status',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'statusName',
+                'label' => '状态'
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
         ],
     ]) ?>
 

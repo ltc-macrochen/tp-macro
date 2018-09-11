@@ -7,6 +7,7 @@
 namespace app\controllers;
 
 use abei2017\wx\Application;
+use common\components\GirlsComponent;
 use common\components\ZhugeComponent;
 use Yii;
 use yii\web\Controller;
@@ -15,14 +16,7 @@ class DevController extends Controller
 {
     public function actionTest()
     {
-        var_dump(microtime());return;
-        $res = (new ZhugeComponent())->uploadEvent("测试统计上报", time());
-        if (isset($res['return_code']) && $res['return_code'] == 0) {
-            // 成功
-        } else {
-            $errMsg = (isset($res['return_code']) ? $res['return_code'] : 'null errcode') . (isset($res['return_message']) ? $res['return_message'] : 'null msg');
-            Yii::warning("[zg upload event error]{$errMsg}");
-        }
+        $res = (new GirlsComponent())->updateVoteCount(1);
         var_dump($res);
     }
 }

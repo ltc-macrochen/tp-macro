@@ -8,7 +8,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'language'=>'zh-CN',
     'bootstrap' => ['log'],
-    'defaultRoute' => 'site/index',
+    'defaultRoute' => 'girls/index',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -47,6 +47,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'admin' => 'girls/index'
             ],
         ],
         'assetManager' => [

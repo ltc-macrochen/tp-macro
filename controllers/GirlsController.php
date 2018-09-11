@@ -44,7 +44,7 @@ class GirlsController extends Controller
     }
 
     /**
-     * Lists all Girls models.
+     * 校花列表
      * @return mixed
      */
     public function actionIndex()
@@ -71,7 +71,7 @@ class GirlsController extends Controller
     }
 
     /**
-     * Creates a new Girls model.
+     * 新增校花
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -88,11 +88,10 @@ class GirlsController extends Controller
                 $model->head = empty($uploadModel->imagePath) ? $model->head : $uploadModel->imagePath;
             } else {
                 Yii::$app->session->setFlash('error', '上传用户头像失败，请稍后再试');
-                var_dump($loadSuccess);
-                var_dump('上传用户头像失败，请稍后再试');return;
                 return $this->refresh();
             }
 
+            $model->vote_count = $model->vote_count ? $model->vote_count : 0;
             $model->created_at = time();
             if (!$model->save()) {
                 Yii::$app->session->setFlash('error', '新增用户失败：' . VarDumper::dumpAsString($model->errors));
@@ -109,7 +108,7 @@ class GirlsController extends Controller
     }
 
     /**
-     * Updates an existing Girls model.
+     * 更新校花信息
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -117,14 +116,25 @@ class GirlsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $uploadModel = new UploadImgComponent();
+        $uploadModel->imageFile = $model->head;
+        $uploadModel->canEmpty = true;
+        $oldVoteCount = $model->vote_count;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->updated_at = time();
+            $newVoteCount = $model->vote_count;
+            $ip = Yii::$app->getRequest()->getUserIP();
+            if ($model->save()) {
+                Yii::warning("IP({$ip})将用户 {$model->name}({$id}) 的票数由({$oldVoteCount})改为($newVoteCount)", 'updateVoteCount');
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'uploadModel' => $uploadModel
+        ]);
     }
 
     /**
@@ -135,7 +145,11 @@ class GirlsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->status = Girls::GIRLS_STATUS_DISABLE;
+        if (!$model->save()) {
+            Yii::$app->session->setFlash('error');
+        }
 
         return $this->redirect(['index']);
     }
@@ -154,5 +168,84 @@ class GirlsController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * 下载数据
+     */
+    public function actionDownload()
+    {
+        $allGirls = Girls::find()->where(['status' => Girls::GIRLS_STATUS_NORMAL])->asArray()->all();
+        //初始化PHPExcel
+        $objectPHPExcel = new \PHPExcel();
+        $objectPHPExcel->setActiveSheetIndex(0);
+        $pageSize = 1000;
+        $count = count($allGirls);
+        $pageCount = (int)($count/$pageSize) +1;
+        $currentPage = 0;
+        $n = 0;
+        foreach ($allGirls as $item){
+            if ( ($perPageIndex = $n % $pageSize) === 0 ) {
+                if($currentPage>0){
+                    $objectPHPExcel->createSheet();
+                    $objectPHPExcel->setActiveSheetIndex($currentPage);
+                }
+                //报表头的输出
+                $objectPHPExcel->getActiveSheet()->mergeCells('B1:G1');
+                $objectPHPExcel->getActiveSheet()->setCellValue('B1','校花投票结果');
+
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->getStyle('B1')->getFont()->setSize(24);
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->getStyle('B1')
+                    ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->setCellValue('B2','日期：'.date("Y年m月j日"));
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->setCellValue('G2','第'.($currentPage+1).'/'.$pageCount.'页');
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->getStyle('G2')
+                    ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+
+                //表格头的输出
+                $objectPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->setCellValue('B3','ID');
+                $objectPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->setCellValue('C3','姓名');
+                $objectPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+                $objectPHPExcel->setActiveSheetIndex($currentPage)->setCellValue('D3','票数');
+                $objectPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+
+                //设置居中
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3')
+                    ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                //设置边框
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3' )
+                    ->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3' )
+                    ->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3' )
+                    ->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3' )
+                    ->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:D3' )
+                    ->getBorders()->getVertical()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                //设置颜色
+                $objectPHPExcel->getActiveSheet()->getStyle('B3:R3')->getFill()
+                    ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FF66CCCC');
+                $currentPage = $currentPage + 1;
+            }
+            //明细的输出
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($perPageIndex+4) ,$item['id']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($perPageIndex+4) ,$item['name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($perPageIndex+4) ,$item['vote_count']);
+
+            $n = $n +1;
+        }
+        //设置分页显示
+        $objectPHPExcel->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
+        $objectPHPExcel->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+        header('Content-Disposition:attachment;filename="校花数据 -'.date("Y年m月j日").'.xls"');
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
     }
 }

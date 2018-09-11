@@ -3,10 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Girls;
+use common\widgets\UploadProgress;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Girls */
-/* @var $form yii\widgets\ActiveForm */
+echo UploadProgress::widget(['id' => 'fileUploadProgress'])
 ?>
 
 <div class="girls-form">
@@ -15,7 +14,9 @@ use common\models\Girls;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($uploadModel, 'imageFile')->fileInput()->label('头像') ?>
+    <?= UploadProgress::uploadImageFileField($form, $uploadModel, 'imageFile', '头像') ?>
+
+    <?= $form->field($model, 'vote_count')->textInput()?>
 
     <?= $form->field($model, 'status')->dropDownList(Girls::getAllGirlsStatus()) ?>
 
