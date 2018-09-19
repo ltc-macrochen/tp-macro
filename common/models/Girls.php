@@ -10,6 +10,8 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $head
+ * @property string $video
+ * @property string $area
  * @property integer $vote_count
  * @property integer $status
  * @property integer $created_at
@@ -37,10 +39,10 @@ class Girls extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'head'], 'required'],
+            [['name', 'head', 'video', 'area'], 'required'],
             [['vote_count', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'string', 'max' => 32],
-            [['head'], 'string', 'max' => 255],
+            [['name', 'area'], 'string', 'max' => 32],
+            [['head', 'video'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,6 +55,8 @@ class Girls extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '姓名',
             'head' => '头像',
+            'video' => '视频',
+            'area' => '赛区',
             'vote_count' => '票数',
             'status' => '状态',
             'created_at' => '创建时间',

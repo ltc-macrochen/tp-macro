@@ -19,7 +19,7 @@ class GirlsSearch extends Girls
     {
         return [
             [['id', 'vote_count', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'head'], 'safe'],
+            [['name', 'head', 'video', 'area'], 'safe'],
         ];
     }
 

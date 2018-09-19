@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'vote_count',
+            'area',
             [
                 'label' => '状态',
                 'value' => 'statusName'

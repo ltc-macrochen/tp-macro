@@ -7,17 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Girls */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Ð£»¨¹ÜÀí', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'æ ¡èŠ±ç®¡ç†', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="girls-view">
 
     <p>
-        <?= Html::a('¸üÐÂ', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('É¾³ý', ['delete', 'id' => $model->id], [
+        <?= Html::a('æ›´æ–°', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('åˆ é™¤', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'ÄúÈ·¶¨ÒªÉ¾³ý¸ÃÌõ¼ÇÂ¼Âð£¿',
+                'confirm' => 'æ‚¨ç¡®å®šè¦åˆ é™¤è¯¥æ¡è®°å½•å—ï¼Ÿ',
                 'method' => 'post',
             ],
         ]) ?>
@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            'area',
             [
                 'attribute' => 'head',
                 'format' => 'raw',
@@ -35,10 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img($model->head, ['style' => 'height:200px;width:auto;']);
                 }
             ],
+            [
+                'attribute' => 'video',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return "<video preload='true' controls='controls' src='{$model->video}' style='height: 200px;width: auto;'></video>";
+                }
+            ],
             'vote_count',
             [
                 'attribute' => 'statusName',
-                'label' => '×´Ì¬'
+                'label' => 'çŠ¶æ€'
             ],
             [
                 'attribute' => 'created_at',

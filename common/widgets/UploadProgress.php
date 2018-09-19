@@ -30,9 +30,9 @@ class UploadProgress extends Widget
         // 注册js
         $this->view->registerJsFile('@web/js/upload/upload.js');
         $this->view->registerJs(<<<END
-            $(".m-upload-btn").click(function(){
+            $(".v-upload-btn").click(function(){
                 //alert($(this).siblings(".file-input").attr("id"))
-                // $(this).siblings(".file-input").click()
+                $(this).siblings(".file-input").click()
             });
 END
 );
@@ -47,7 +47,7 @@ END
 END
 );
 
-        $modal = Modal::begin([
+        Modal::begin([
             'header' => "<h2>$this->title</h2>",
             'toggleButton' => false,
             'id' => $this->id,

@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\common\models\User;
 use common\components\refactor\filters\AccessControl;
-use common\components\UploadImgComponent;
+use common\components\UploadVideoComponent;
 use Yii;
 use common\models\Girls;
 use common\models\GirlsSearch;
@@ -78,22 +78,28 @@ class GirlsController extends Controller
     public function actionCreate()
     {
         $model = new Girls();
-        $uploadModel = new UploadImgComponent();
+        $uploadModel = new UploadVideoComponent();
 
         $posts = Yii::$app->request->post();
         if ($model->load($posts)) {
             $loadSuccess = $uploadModel->load($posts);
             $uploadModel->imageFile = UploadedFile::getInstance($uploadModel, 'imageFile');
+            $uploadModel->videoFile = UploadedFile::getInstance($uploadModel, 'videoFile');
             if ($loadSuccess && $uploadModel->validate() && $uploadModel->upload()) {
                 $model->head = empty($uploadModel->imagePath) ? $model->head : $uploadModel->imagePath;
+                $model->video = empty($uploadModel->videoPath) ? $model->video : $uploadModel->videoPath;
             } else {
-                Yii::$app->session->setFlash('error', '上传用户头像失败，请稍后再试');
+                Yii::$app->session->setFlash('error', '上传用户头像或视频失败，请稍后再试');
                 return $this->refresh();
             }
 
             $model->vote_count = $model->vote_count ? $model->vote_count : 0;
             $model->created_at = time();
             if (!$model->save()) {
+                // 保存用户失败，删除上传的文件
+                unlink($model->head);
+                unlink($model->video);
+
                 Yii::$app->session->setFlash('error', '新增用户失败：' . VarDumper::dumpAsString($model->errors));
                 return $this->refresh();
             }
@@ -116,18 +122,49 @@ class GirlsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $uploadModel = new UploadImgComponent();
+        $uploadModel = new UploadVideoComponent();
         $uploadModel->imageFile = $model->head;
+        $uploadModel->videoFile = $model->video;
         $uploadModel->canEmpty = true;
         $oldVoteCount = $model->vote_count;
 
+        // 旧文件
+        $oldImage = $model->head;
+        $oldVideo = $model->video;
+        $delOldImage = false;
+        $delOldVideo = false;
+
         if ($model->load(Yii::$app->request->post())) {
+            $uploadModel->imageFile = UploadedFile::getInstance($uploadModel, 'imageFile');
+            $uploadModel->videoFile = UploadedFile::getInstance($uploadModel, 'videoFile');
+
+            if ($model->validate() && $uploadModel->upload()) {
+                if (!empty($uploadModel->imagePath)) {
+                    $model->head = $uploadModel->imagePath;
+                    $delOldImage = true;
+                }
+
+                if (!empty($uploadModel->videoPath)) {
+                    $model->video = $uploadModel->videoPath;
+                    $delOldVideo = true;
+                }
+            }
             $model->updated_at = time();
             $newVoteCount = $model->vote_count;
             $ip = Yii::$app->getRequest()->getUserIP();
             if ($model->save()) {
+                // 更新成功，删除旧文件
+                if ($delOldImage) {
+                    unlink($oldImage);
+                }
+                if ($delOldVideo) {
+                    unlink($oldVideo);
+                }
+
                 Yii::warning("IP({$ip})将用户 {$model->name}({$id}) 的票数由({$oldVoteCount})改为($newVoteCount)", 'updateVoteCount');
                 return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', '更新失败：' . VarDumper::dumpAsString($model->errors));
             }
         }
 
