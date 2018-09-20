@@ -40,7 +40,7 @@ class DataController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         $girls = Girls::find()
-            ->select('id,name,head,vote_count')
+            ->select('id,name,head,vote_count,area,video')
             ->where(['status' => Girls::GIRLS_STATUS_NORMAL])
             ->orderBy('vote_count desc')
             ->asArray()
@@ -86,7 +86,7 @@ class DataController extends Controller
 
         $cache->set($cacheKey, intval($count) + 1, 24 * 60 * 60);
 
-        return $this->buildResponseArray(0, 'success');
+        return $this->buildResponseArray(0, '恭喜您，投票成功！');
     }
 
     /**

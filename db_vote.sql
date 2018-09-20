@@ -23,6 +23,8 @@ CREATE TABLE `t_girls` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(32) NOT NULL COMMENT '姓名',
   `head` VARCHAR(255) NOT NULL COMMENT '头像',
+  `video` VARCHAR(255) NOT NULL COMMENT '视频介绍',
+  `area` VARCHAR(32) NOT NULL COMMENT '赛区',
   `vote_count` INT UNSIGNED DEFAULT 0 COMMENT '票数',
   `status` TINYINT DEFAULT 0 COMMENT '状态',
   `created_at` INT DEFAULT 0 COMMENT '创建时间',

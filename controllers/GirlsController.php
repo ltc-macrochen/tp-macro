@@ -138,7 +138,7 @@ class GirlsController extends Controller
             $uploadModel->imageFile = UploadedFile::getInstance($uploadModel, 'imageFile');
             $uploadModel->videoFile = UploadedFile::getInstance($uploadModel, 'videoFile');
 
-            if ($model->validate() && $uploadModel->upload()) {
+            if ($uploadModel->upload()) {
                 if (!empty($uploadModel->imagePath)) {
                     $model->head = $uploadModel->imagePath;
                     $delOldImage = true;
@@ -149,15 +149,16 @@ class GirlsController extends Controller
                     $delOldVideo = true;
                 }
             }
+
             $model->updated_at = time();
             $newVoteCount = $model->vote_count;
             $ip = Yii::$app->getRequest()->getUserIP();
-            if ($model->save()) {
+            if ($model->validate() && $model->save()) {
                 // 更新成功，删除旧文件
-                if ($delOldImage) {
+                if ($delOldImage && $oldImage) {
                     unlink($oldImage);
                 }
-                if ($delOldVideo) {
+                if ($delOldVideo && $oldVideo) {
                     unlink($oldVideo);
                 }
 
