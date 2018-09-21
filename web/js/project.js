@@ -68,14 +68,22 @@ function getAllUsers() {
                 $('.flowers_turn').append(uHtml);
             }
 
-            setFlowersSlick();
-            onShowVideo();
+            if (d.length > 0) {
+                setFlowersSlick();
+                onShowVideo();
+            } else {
+                $('.vote_btn').hide();
+            }
         }
     }, 'json');
 }
 
 // 投票
 function doVote(uid) {
+    if (undefined == uid || !uid) {
+        alert('请选择投票对象');
+        return false;
+    }
     $.post('/data/do-vote', {id:uid}, function (res) {
         alert(res.msg);
         if (res.err === 0) {

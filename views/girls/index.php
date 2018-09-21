@@ -36,8 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'vote_count',
             'area',
             [
+                'attribute' => 'status',
                 'label' => '状态',
-                'value' => 'statusName'
+                'value' => 'statusName',
+                'contentOptions' => ['style' => 'width:6em'],
+                'filter' => \common\models\Girls::getAllGirlsStatus()
             ],
             [
                 'label' => '创建时间',
@@ -48,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-
+                'header' => '操作'
             ],
         ],
     ]); ?>

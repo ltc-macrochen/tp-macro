@@ -79,6 +79,7 @@ class Girls extends \yii\db\ActiveRecord
     public static function getAllGirlsStatus()
     {
         return [
+            '' => '全部',
             static::GIRLS_STATUS_NORMAL => '正常',
             static::GIRLS_STATUS_DISABLE => '删除'
         ];
