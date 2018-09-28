@@ -89,7 +89,8 @@ class GirlsController extends Controller
                 $model->head = empty($uploadModel->imagePath) ? $model->head : $uploadModel->imagePath;
                 $model->video = empty($uploadModel->videoPath) ? $model->video : $uploadModel->videoPath;
             } else {
-                Yii::$app->session->setFlash('error', '上传用户头像或视频失败，请稍后再试');
+                Yii::error('上传用户头像或视频失败，请稍后再试：' . VarDumper::dumpAsString($uploadModel->errors));
+                Yii::$app->session->setFlash('error', '上传用户头像或视频失败，请稍后再试：' . VarDumper::dumpAsString($uploadModel->errors));
                 return $this->refresh();
             }
 

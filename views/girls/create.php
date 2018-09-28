@@ -9,7 +9,6 @@ $this->params['breadcrumbs'][] = ['label' => '校花管理', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="girls-create">
-
     <?= $this->render('_form', [
         'model' => $model,
         'uploadModel' => $uploadModel

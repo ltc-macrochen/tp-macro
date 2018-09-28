@@ -28,7 +28,8 @@ echo UploadProgress::widget(['id' => 'fileUploadProgress'])
 
     <?= $form->field($model, 'vote_count')->textInput(['placeholder' => '请输入票数，可以不设置，默认为0'])?>
 
-    <?= $form->field($model, 'status')->dropDownList(Girls::getAllGirlsStatus()) ?>
+    <?php $allStatus = Girls::getAllGirlsStatus(); array_shift($allStatus)?>
+    <?= $form->field($model, 'status')->dropDownList($allStatus) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '新增' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

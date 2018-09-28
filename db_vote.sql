@@ -1,5 +1,5 @@
-CREATE DATABASE `db_vote` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-USE `db_vote`;
+CREATE DATABASE `db_ccb_nuoxin` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+USE `db_ccb_nuoxin`;
 set names utf8;
 
 create table if not exists `t_user` (

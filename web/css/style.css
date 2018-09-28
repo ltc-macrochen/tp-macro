@@ -8,7 +8,7 @@ a{text-decoration:none;overflow:hidden;opacity:1;outline:none;}
 a:hover{color:#000;text-decoration:none;}
 ul{list-style:none;}
 input,select{vertical-align:middle;padding:0;margin:0;border:none;outline:none;outline-style:none;}
-body{overflow-x: hidden;position: fixed;}
+body{overflow-x: hidden;position: relative;}
 
 .box{width:100%;margin:0 auto; position:relative;overflow-x: hidden;max-width: 750px;}
 
@@ -20,23 +20,47 @@ body{overflow-x: hidden;position: fixed;}
 .labor_text {position: absolute;left: 58px;top: 550px;width: 642px;}
 
 .labor_turn {position: absolute;left: 58px;top: 300px;width: 640px;height: 225px;}
-.labor_turn .slick-dots{position: absolute;width: 100%;text-align: center; left: 265px;top: 240px;z-index: 99}
-.labor_turn .slick-dots li{margin-right: 1%; width: 9px ;height:9px;background: url("../images/hui.png") left top no-repeat;background-size: 100%;
-    display: block; position: relative;float: left;}
-.labor_turn .slick-dots li button{ text-indent: 9999px}
-.labor_turn .slick-dots li button{position: absolute; left: 0; top: 0;}
-.labor_turn .slick-dots li.slick-active button{background: url("../images/lan.png") left top no-repeat;width: 100%; position: absolute;  height: 100%;background-size: 100%;
+.labor_turn .slick-dots {
+    text-align: center;
+}
+.labor_turn .slick-dots li {
+    width: 1.8%;
+    display: inline-block;
+    background: url(../images/hui.png) no-repeat;
+    background-size: 100%;
+    margin: 1%;
+}
+.labor_turn .slick-dots li button {
+    opacity: 0;
+}
+.labor_turn .slick-dots .slick-active {
+    background-image: url(../images/lan.png);
 }
 
+
 .flowers_title {position: absolute;left:21px;top: 731px;width: 709px;}
-.flowers_turn {position: absolute;left: 20px;top: 818px;width: 710px;}
-.flowers_turn .slick-dots{position: absolute;width: 100%;text-align: center;left: 260px;top: 278px;z-index: 99}
-.flowers_turn .slick-dots li{margin-right: 1%; width: 13px ;height:13px;background: url("../images/bai.png") left top no-repeat;background-size: 100%;
-    display: block; position: relative;float: left;}
-.flowers_turn .slick-dots li button{ text-indent: 9999px}
-.flowers_turn .slick-dots li button{position: absolute; left: 0; top: 0;}
-.flowers_turn .slick-dots li.slick-active button{background: url("../images/huang.png") left top no-repeat;width: 100%; position: absolute;  height: 100%;background-size: 100%;
+.flowers_turn {position: absolute;left: 20px;top: 818px;width: 710px;height: 300px;}
+
+.flowers_turn .slick-dots {
+    text-align: center;
 }
+.flowers_turn .slick-dots li {
+    width: 1.8%;
+    display: inline-block;
+    background: url(../images/bai.png) no-repeat;
+    background-size: 100%;
+    margin: 1%;
+}
+.flowers_turn .slick-dots li button {
+    opacity: 0;
+}
+.flowers_turn .slick-dots .slick-active {
+    background-image: url(../images/huang.png);
+}
+
+
+
+
 
 .flowers_bottom {position: absolute;right: 0;bottom: 0;width: 670px;}
 .video_img {position: absolute;left: 0;top: 0;width: 430px;}
@@ -55,7 +79,7 @@ body{overflow-x: hidden;position: fixed;}
 
 .prev {position: absolute;left: 460px;top: 4px;width: 9px;}
 .next {position: absolute;left: 602px;top: 2px;width: 9px;}
-
+.flowers_img {position: relative}
 .vote_btn {position: absolute;left: 20px;top: 1124px;width: 710px;}
 
 /*弹窗*/

@@ -14,29 +14,29 @@ $(function () {
         slidesToScroll: 1
     });
 
-    // 视频轮播
-    // $(".flowers_turn").slick({
-    //     dots:true,
-    //     infinite: true,
-    //     arrows: true,
-    //     speed: 1000,
-    //     fade: true,
-    //     cssEase: 'linear',
-    //     prevArrow:	".prev",
-    //     nextArrow:	".next",
-    //     slidesToShow: 1,
-    //     slidesToScroll: 1
-    // });
+    // 视频轮播 @macro
+    /*$(".flowers_turn").slick({
+        speed: 1000,
+        dots: true,
+        infinite: true,
+        arrows: true,
+        draggable: false,
+        prevArrow: ".prev",
+        nextArrow: ".next",
+        autoplay:false,
+        slidesToShow : 1
 
-    // 点击视频图片弹窗对应视频弹窗
-    // $(".video_img").on("click",function(){
-    //     var number = $(this).attr("data-id");
-    //     $(".pop").show();
-    //     $(".player"+number).show();
-    //     // $(".video_img1").hide();
-    //     $("#video"+number)[0].play();
-    //     console.log(number);
-    // });
+    });*/
+
+    // 点击视频图片弹窗对应视频弹窗 @macro
+    /*$(".video_img").on("click",function(){
+        var number = $(this).attr("data-id");
+        $(".pop").show();
+        $(".player"+number).show();
+        // $(".video_img1").hide();
+        $("#video"+number)[0].play();
+        console.log(number);
+    });*/
 
     // 关闭视频
     $(".Shut_btn").on("click",function(){

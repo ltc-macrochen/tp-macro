@@ -2,16 +2,15 @@
 // 设置校花轮播
 function setFlowersSlick() {
     $(".flowers_turn").slick({
-        dots:true,
+        speed: 1000,
+        dots: true,
         infinite: true,
         arrows: true,
-        speed: 1000,
-        fade: true,
-        cssEase: 'linear',
-        prevArrow:	".prev",
-        nextArrow:	".next",
-        slidesToShow: 1,
-        slidesToScroll: 1
+        draggable: false,
+        prevArrow: ".prev",
+        nextArrow: ".next",
+        autoplay:false,
+        slidesToShow : 1
     });
 }
 
@@ -29,13 +28,13 @@ function increaseValue(obj, value) {
     if (typeof(obj) !== 'object') {
         return false;
     }
-    var oldValue = obj.text();
-    obj.text(parseInt(oldValue) + parseInt(value));
+    var oldValue = obj.html();
+    obj.html(parseInt(oldValue) + parseInt(value));
 }
 
 // 获取所有校花
 function getAllUsers() {
-    $.post('/data/all-girls', '', function (res) {
+    $.post('/index.php?r=data/all-girls', '', function (res) {
         if (res.err === 0) {
             $('.flowers_turn').empty();
             var d = res.data;
@@ -84,11 +83,20 @@ function doVote(uid) {
         alert('请选择投票对象');
         return false;
     }
-    $.post('/data/do-vote', {id:uid}, function (res) {
+
+    var doing = false;
+    if (doing) {
+        alert('您的操作过于频繁，请稍后再试');
+        return false;
+    }
+    doing = true;
+
+    $.post('/index.php?r=data/do-vote', {id:uid}, function (res) {
         alert(res.msg);
         if (res.err === 0) {
             increaseValue($('.votecount-' + uid), 1);
         }
+        doing = false;
     }, 'json');
 }
 
